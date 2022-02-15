@@ -95,7 +95,7 @@
                         </table>
                         <div class="page-title-box">
                             @if($temp == 0)
-                                <h6 class="page-title" style="text-align: center;">trống!</h6>
+                                <h6 class="page-title" style="text-align: center;">Trống!</h6>
                             @endif
                         </div>
                         {{$roles->links()}}

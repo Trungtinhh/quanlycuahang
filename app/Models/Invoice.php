@@ -13,30 +13,35 @@ class Invoice extends Model
 
     protected $fillable = [
         'id',
-        'order_id',
-        'table_id',
+        'saler_id',
+        'buyer_id',
+        'product_id',
         'user_id',
-        'total',
-        'submoney',
-        'time_in',
-        'time_out',
-        'status',
+        'product_amount',
+        'product_unit', 
+        'price_id',
+        'date_create',
+        'status'
     ];
-
-    public function order()
+    public function saler()
     {
-        return $this->hasOne('App\models\Order', 'id', 'order_id');
+        return $this->hasOne('App\Models\Saler', 'id', 'saler_id');
     }
-    public function table()
+    public function buyer()
     {
-        return $this->hasOne('App\models\Table', 'id', 'table_id');
+        return $this->hasOne('App\Models\Buyer', 'id', 'buyer_id');
+    }
+    public function product()
+    {
+        return $this->hasOne('App\Models\Product', 'id', 'product_id');
     }
     public function user()
     {
-        return $this->hasOne('App\models\User', 'id', 'user_id');
+        return $this->hasOne('App\Models\Staff', 'id', 'user_id');
     }
     public function invoiceDetail()
     {
-        return $this->belongsTo('App\models\InvoiceDetail', 'id', 'invoice_id');
-    } 
+        return $this->belongsTo('App\Models\InvoiceDetail', 'id', 'invoice_id');
+    }
+
 }

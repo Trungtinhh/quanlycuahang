@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <p class="mb-1 mt-3 mt-sm-0"><i class="mdi mdi-email me-1"></i> {{ $pro->email }}</p>
-                                    <p class="mb-0"><i class="mdi mdi-phone-classic me-1"></i> {{ $pro->phone }}</p>
+                                    <p class="mb-0"><i class="mdi mdi-phone-classic me-1"></i> 0{{ $pro->phone }}</p>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="text-center mt-3 mt-sm-0">
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <p class="mb-1 mt-3 mt-sm-0"><i class="mdi mdi-email me-1"></i> {{ $pro->email }}</p>
-                                    <p class="mb-0"><i class="mdi mdi-phone-classic me-1"></i> {{ $pro->phone }}</p>
+                                    <p class="mb-0"><i class="mdi mdi-phone-classic me-1"></i> 0{{ $pro->phone }}</p>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="text-center mt-3 mt-sm-0">

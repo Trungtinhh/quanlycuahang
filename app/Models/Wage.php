@@ -13,13 +13,13 @@ class Wage extends Model
 
     protected $fillable = [
         'id',
+        'salary_date',
+        'user_name',
+        'wage_basic',
+        'sales_money',
+        'bonus',
+        'deduct',
         'wage',
-        'hour',
-        'user_id',
-        'date',
+        'note',
     ];
-    public function user()
-    {
-        return $this->hasOne('App\models\User', 'id', 'user_id');
-    }
 }

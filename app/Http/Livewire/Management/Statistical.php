@@ -2,135 +2,113 @@
 
 namespace App\Http\Livewire\Management;
 
+use App\Models\ImportToStoreHouse;
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\ProductDetail;
 use Livewire\Component;
 use App\Models\Statistical as Statis;
-use App\Models\Invoice;
-use App\Models\ImportgoodsDrink;
-use App\Models\ImportgoodsIngredent;
-use App\Models\DrinkDetail;
-use App\Models\IngredentDetail;
-use App\Models\Order;
-use App\Models\Drink;
-use App\Models\Ingredent;
+
 use Illuminate\Support\Carbon;
 
 class Statistical extends Component
 {
     public $revenue = 0, $order = 0, $importgoods = 0, $expired = 0,
-        $importgoodsIngredent = [], $importgoodsDrink = [],
-        $expired_drink = [], $expired_ingredent = [];
+        $importgoodsToStore, $product_expired = [];
 
-    public $drink_sale = [], $date_revenue = [], $value_revenue = [], $date_revenue_week, $value_revenue_week;
-    public $data_revenue_all = [], $value_revenue_all = [];
-    public $data_drink_sale = [], $value_drink_sale = [];
-    public $filter = '', $data_filter = [], $value_filter = [];
+
+    public $product_sale = [], $time_revenue = [], $value_revenue = [], $date_revenue_month = [], $value_revenue_month = [];
+    public $month_revenue_year = [], $value_revenue_year = [];
+    public $data_product_sale = [], $value_product_sale = []; 
     public function render()
     {
         return view('livewire.management.statistical');
     }
     public function mount()
     {
-        $money = 0;
-        $this->date_revenue = [];
-        $this->value_revenue = [];
-        $invoice = Invoice::where('status', 1)->get()->groupBy(['time_out', 'table_id']);
+        $statistical = Statis::where('date', Carbon::now('Asia/Ho_Chi_Minh')->toDateString())->first();
+        if (!empty($statistical)) {
+            $this->revenue = $statistical->turnover;
+            $this->order = $statistical->total_order;
+        }
+
+        $this->importgoods = ImportToStoreHouse::where('date_add', Carbon::now('Asia/Ho_Chi_Minh')->toDateString())->count();
+
+        $count_product_expired = ProductDetail::all();
+        foreach ($count_product_expired as $count) {
+            $date_exp = new Carbon($count->date_exp);
+            if ($date_exp->lessThan(Carbon::now('Asia/Ho_Chi_Minh')->toDateString())) {
+                $this->expired++;
+            }
+        }
+
+        $invoice = Invoice::where('status', 2)->get()->groupBy(['date_create']);
         foreach ($invoice as $Invoi => $invoi) {
             $date = new Carbon($Invoi, 'Asia/Ho_Chi_Minh');
-            if ($date->toDateString() == Carbon::now('Asia/Ho_Chi_Minh')->toDateString()) {
-                foreach ($invoi as $in => $valu) {
-                    foreach ($valu as $val) {
-                        $money = $val->total;
-                    }
-                    $this->revenue += $money;
+            if ($date->toDateString() == (Carbon::now('Asia/Ho_Chi_Minh')->toDateString())) {
+                foreach ($invoi as $val) {
+                    $money = $val->invoiceDetail->total;
                 }
                 $this->value_revenue[] = $money;
-                $this->date_revenue[] = $date->toTimeString();
+                $this->time_revenue[] = $date->toTimeString();
             }
         }
-        $sub7days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(7)->toDateString();
-        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-        $week = Statis::whereBetween('date', [$sub7days, $now])->get();
-        foreach ($week as $invoi) {
-            $this->value_revenue_week[] = $invoi->turnover;
-            $this->date_revenue_week[] = $invoi->date;
+
+        $static = Statis::all();
+        $values = 0;
+        foreach ($static as $invoi) {
+            $check = new Carbon($invoi->date);
+            if ($check->month == Carbon::now()->month) {
+                $this->value_revenue_month[] = $invoi->turnover;
+                $this->date_revenue_month[] = $invoi->date;
+            }
         }
-        //dd($this->value_revenue, $this->date_revenue);
-        foreach ($invoice as $Invoi => $invoi) {
-            $date = new Carbon($Invoi, 'Asia/Ho_Chi_Minh');
-            if ($date->toDateString() == Carbon::now('Asia/Ho_Chi_Minh')->toDateString()) {
-                foreach ($invoi as $in => $valu) {
-                    $this->order += 1;
+        for ($i = 1; $i < 13; $i++) {
+            foreach ($static as $invoice) {
+                $check_month = new Carbon($invoice->date);
+                if ($check->year == Carbon::now()->year) {
+                    if ($check_month->month == $i) {
+                        $values += $invoice->turnover;
+                    }
                 }
             }
+            $this->value_revenue_year[] = $values;
+            $this->month_revenue_year[] = 'Tháng ' . $i;
+            $values = 0;
         }
-        $importgoodsDrink = ImportgoodsDrink::all();
-        foreach ($importgoodsDrink as $im) {
-            if ($im->date_add == Carbon::now('Asia/Ho_Chi_Minh')->toDateString()) {
-                $this->importgoods++;
-                $this->importgoodsDrink[] = $im;
+
+        $this->importgoodsToStore = ImportToStoreHouse::where('date_add', Carbon::now('Asia/Ho_Chi_Minh')->toDateString())->get();
+
+        $product_expired = ProductDetail::all();
+        foreach ($product_expired as $valu) {
+            $date_exp_product = new Carbon($valu->date_exp);
+            if ($date_exp_product->lessThan(Carbon::now('Asia/Ho_Chi_Minh')->toDateString()) && $valu->product->delete_status != 1) {
+                $this->product_expired[] = $valu;
             }
         }
-        $importgoodsIngredent = ImportgoodsIngredent::all();
-        foreach ($importgoodsIngredent as $imIngredent) {
-            if ($imIngredent->date_add == Carbon::now('Asia/Ho_Chi_Minh')->toDateString()) {
-                $this->importgoods++;
-                $this->importgoodsIngredent[] = $imIngredent;
-            }
-        }
-        $drinkExpired = DrinkDetail::all();
-        foreach ($drinkExpired as $drink) {
-            $day = new Carbon($drink->date_exp, 'Asia/Ho_Chi_Minh');
-            if ($drink->drink->category == 1 && $day->lessThan(Carbon::now('Asia/Ho_Chi_Minh'))) {
-                $this->expired++;
-                $this->expired_drink[] = $drink;
-            }
-        }
-        $ingredentExpired = IngredentDetail::all();
-        foreach ($ingredentExpired as $ingredent) {
-            $day = new Carbon($ingredent->date_exp, 'Asia/Ho_Chi_Minh');
-            if ($day->lessThan(Carbon::now('Asia/Ho_Chi_Minh'))) {
-                $this->expired++;
-                $this->expired_ingredent[] = $ingredent;
-            }
-        }
-        $this->data_drink_sale = [];
-        $this->value_drink_sale = [];
-        $drink_sales = Order::where('status', 2)->get()->groupBy('drink_id');
-        foreach ($drink_sales as $drink_sale_id => $drink) {
-            $drink_amount_sale = 0;
-            $drink_sale_name = '';
-            foreach ($drink as $val) {
-                $day = new Carbon($val->created_at,'Asia/Ho_Chi_Minh');
-                $_7days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(7);
-                if ($day->greaterThan($_7days)) {
-                    $drink_amount_sale += $val->drink_amount;
-                    $drink_sale_name = $val->drink->drink_name;
+
+        $this->data_product_sale = [];
+        $this->value_product_sale = [];
+        $product_sales = Invoice::where('status', 2)->get()->groupBy('product_id');
+        foreach ($product_sales as $product_sale_id => $product) {
+            $product_amount_sale = 0;
+            $product_sale_name = '';
+            foreach ($product as $val) {
+                $day = new Carbon($val->created_at, 'Asia/Ho_Chi_Minh');
+                $_30days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(30);
+                if ($day->greaterThan($_30days)) {
+                    $product_amount_sale += $val->product_amount;
+                    $product_sale_name = $val->product->product_name;
                 }
             }
-            if ($drink_amount_sale != 0) {
-                $this->drink_sale[$drink_sale_name] = ($drink_amount_sale);
+            if ($product_amount_sale != 0) {
+                $this->product_sale[$product_sale_name] = ($product_amount_sale);
             }
         }
-        arsort($this->drink_sale);
-        foreach ($this->drink_sale as $drink => $vl) {
-            $this->data_drink_sale[] = $drink;
-            $this->value_drink_sale[] = $vl;
+        arsort($this->product_sale);
+        foreach ($this->product_sale as $product => $vl) {
+            $this->data_product_sale[] = $product;
+            $this->value_product_sale[] = $vl;
         }
-    }
-    public function deleteDrink($drink_id)
-    {
-        Drink::where('drink_id', $drink_id)->delete();
-        $this->dispatchBrowserEvent('alert', [
-            'type' => 'success',
-            'message' => "Đã xóa!"
-        ]);
-    }
-    public function deleteIngredent($ingredent_id)
-    {
-        Ingredent::where('ingredent_id', $ingredent_id)->delete();
-        $this->dispatchBrowserEvent('alert', [
-            'type' => 'success',
-            'message' => "Đã xóa!"
-        ]);
     }
 }

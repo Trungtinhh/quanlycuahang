@@ -5,86 +5,86 @@
         }
     </style>
     <div>
-        <div class="card-body">
-            <!-- <span class="logo-lg-text-light">UBold</span> -->
-            <h5 style="float:right; margin-right:100px;">
-                Ngày tạo: {{ now('Asia/Ho_Chi_Minh') }}
-                <br>
-                ID:#{{ $ID }}
-            </h5>
-            <div class="table-responsive">
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th>Nhân viên Order: </th>
-                            <td>{{ $user }}</td>
-                        </tr>
-                        <tr>
-                            <th>Bàn: </th>
-                            <td>{{ $table_in }}</td>
-                        </tr>
-                        <tr>
-                            <th>Khu vực: </th>
-                            <td>{{ $area_in }}</td>
-                        </tr>
-                        <tr>
-                            <th> Trạng thái: </th>
-                            <td>{{ $status }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> <!-- end .table-responsive -->
-            <div class="table-responsive bg-light">
-                <table class="table">
+        <div class="row">
+            <div class="col-3">
+                <span class="logo-sm">
+                    <img src="{{ asset('image/logo.jpg')}}" alt="" height="65">
+                </span>
+            </div>
+            <div class="col-8">
+                <h3>CÔNG TY TNHH VẬT TƯ THIẾT BỊ Y TẾ VIỆT HẢI</h3>
+                <span>Mã số thuế: </span>
+                <span>Địa chỉ: </span>
+                <span>Điện thoại: </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>HÓA ĐƠN BÁN HÀNG</h2>
+                <span style="float: right;">Ngày-tháng-năm</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <span>Đơn vị mua hàng: </span>
+                <span>Số điện thoại: </span>
+                <span>Địa chỉ: </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table>
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Tên</th>
-                            <th>Giá</th>
+                            <th>Tên hàng hóa</th>
+                            <th>Số lô</th>
+                            <th>HSD</th>
                             <th>Số lượng</th>
-                            <th>Thành tiền</th>
+                            <th>Đơn vị</th>
+                            <th>Đơn giá</th>
+                            <th>Tổng tiền</th>
                         </tr>
                     </thead>
-
-                    <tbody id='content_all'>
-                        @foreach($invoice_detail as $indetail)
-                            <tr>
-                                <th scope="row"><span class="badge bg-primary">{{ ++$loop->index }}</span></th>
-                                <th scope="row">{{ $indetail->order->drink->drink_name }}</th>
-                                <td scope="row">{{ $indetail->order->drink->drinkDetail->price->price_cost }}</td>
-                                <td scope="row">
-                                    {{ $indetail->order->drink_amount }}
-                                </td>
-                                <td scope="row" class="text-center text-danger">
-                                    {{ $indetail->order->drink->drinkDetail->price->price_cost*$indetail->order->drink_amount }} VND
-                                </td>
-                            </tr>
-                        @endforeach
+                    <tbody>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tbody>
                 </table>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-7"></div>
-                <div class="col-5">
-                    <table>
-                        <tr>
-                            <th>Tổng cộng:</th>
-                            <th>{{" "}}</th>
-                            <th>{{ $total }} VND</th>
-                        </tr>
-                        <tr>
-                            <th>Giảm giá: </th>
-                            <th>{{" "}}</th>
-                            <th>{{$percen}} VND</th>
-                        </tr>
-                        <tr>
-                            <th>Tổng tiền:</th>
-                            <th>{{" "}}</th>
-                            <th>{{ $total - $percen}} VND</th>
-                        </tr>
-                    </table>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <tr>
+                        <th>Tổng tiền: </th>
+                        <th>0</th>
+                    </tr>
+                    <tr>
+                        <th>Chiết khấu: </th>
+                        <th>0</th>
+                    </tr>
+                    <tr>
+                        <th>Tiền hàng: </th>
+                        <th>0</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-center">
+                <p><b>Đơn vị mua</b></p>
+                <span><i>(Ký rõ họ tên)</i></span>
+            </div>
+            <div class="col-6 text-center">
+                <p><b>Đơn vị bán</b></p>
+                <span><i>(Ký rõ họ tên)</i></span>
             </div>
         </div>
     </div>

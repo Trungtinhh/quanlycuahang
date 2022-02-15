@@ -17,10 +17,7 @@ class Importgoods extends Component
 
     public function render()
     {
-        return view('livewire.management.importgoods', [
-            'drink' => ImportgoodsDrink::orderBy('date_add', 'DESC')->paginate(10),
-            'ingredent' => ImportgoodsIngredent::orderBy('date_add', 'DESC')->paginate(10)
-        ]);
+        return view('livewire.management.importgoods');
     }
     public function undoDrink($import_id)
     {

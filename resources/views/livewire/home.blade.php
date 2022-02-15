@@ -1,10 +1,17 @@
 <div>
     BẢNG ĐIỀU KHIỂN
-    <div style="text-align:center;">
-        <h3>Chất lượng tạo niềm tin</h3>
+    <div class="card">
+        <div class="card-body text-center border rounded border-danger md-1">
+            <h3 class='text-primary'>CÔNG TY TNHH VẬT TƯ THIẾT BỊ Y TẾ <b class="text-danger">VIỆT HẢI</b></h3>
+            <p class='text-primary'>Địa chỉ: C1-20 đường số 18, KDC Thiên Lộc, X.Tân Phú Thạnh, Châu Thành A, Hậu Giang</p>
+            <p class='text-primary'>SĐT: 0333.999.499 - 0978.2222.65</p>
+            <h4 class='text-danger' style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Chất lượng làm nên uy tín - Uy tín làm nên thương hiệu</h4>
+        </div>
     </div>
-    <span class="logo-sm">
-        <img src="{{asset('assets/images/logo_quancf_3.jpg')}}" alt="" width="100%">
-        <!-- <span class="logo-lg-text-light">UBold</span> -->
-    </span>
+    <div class="card">
+        <div class="card-body text-center">
+            <img src="{{ asset('image/home.jpg') }}" alt="">
+        </div>
+    </div>
+
 </div>

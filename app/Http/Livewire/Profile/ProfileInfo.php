@@ -5,13 +5,16 @@ namespace App\Http\Livewire\Profile;
 use Livewire\Component;
 use App\Models\Profile;
 use App\Models\User;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileInfo extends Component
 {
-    public $name, $phone, $birthday, $address, $email;
+    use WithFileUploads;
+    public $name, $phone, $birthday, $address, $email, $image;
     public $info;
     protected $rules = [
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         'name' => 'required',
         'phone' => 'required',
         'birthday' => 'required',
@@ -19,6 +22,10 @@ class ProfileInfo extends Component
         'email' => 'required',
     ];
     protected $messages = [
+        'image.required' => 'Vui lòng chọn ảnh!',
+        'image.image' => 'Tệp tải lên không phải hình ảnh!',
+        'image.mimes' => 'Định dạng không hỗ trợ!',
+        'image.max' => 'Ảnh quá lớn!',
         'name.required' => 'Tên không được bỏ trống!',
         'phone.required' => 'Số điện thoại không được bỏ trống!',
         'birthday.required' => 'Ngày sinh không được bỏ trống!',
@@ -38,7 +45,8 @@ class ProfileInfo extends Component
         $this->validate();
         User::findOrFail(Auth::user()->id)->update([
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'profile_photo_path' => $this->image->store('images', 'public'),
         ]);
         Profile::where('user_id', Auth::user()->id)->update([
             'phone' => $this->phone,

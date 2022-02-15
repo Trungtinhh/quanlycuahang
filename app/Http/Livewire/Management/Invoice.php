@@ -7,7 +7,7 @@ use App\Models\Order as Od;
 use App\Models\Invoice as Iv;
 use App\Models\Statistical;
 use App\Models\InvoiceDetail;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Carbon;
 
 use Livewire\WithPagination;

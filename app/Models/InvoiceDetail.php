@@ -14,17 +14,23 @@ class InvoiceDetail extends Model
     protected $fillable = [
         'id',
         'invoice_id',
-        'drink_name',
-        'table_name',
         'user_name',
-        'time_in',
-        'time_out',
+        'product_name',
+        'price_cost',
         'total',
         'submoney',
-        'status',
+        'tax',
+        'promotion_id',
+        'quantity_promotion',
+        'date_create'
+        
     ];
     public function invoice()
     {
-        return $this->hasOne('App\models\Invoice', 'id', 'invoice_id');
+        return $this->hasOne('App\Models\Invoice', 'id', 'invoice_id');
+    }
+    public function promotion()
+    {
+        return $this->hasOne('App\Models\Promotion', 'id', 'promotion_id');
     }
 }

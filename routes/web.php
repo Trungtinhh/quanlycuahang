@@ -2,29 +2,27 @@
 
 use App\Http\Controllers\StatisticalController;
 use App\Http\Livewire\Home;
-use App\Http\Livewire\Management\Area;
-use App\Http\Livewire\Management\Calendar;
+use App\Http\Livewire\Management\AddProduct;
 use App\Http\Livewire\Management\Import;
-use App\Http\Livewire\Management\Importgoods;
-use App\Http\Livewire\Management\Exportgoods;
 use App\Http\Livewire\Management\ListHuman;
-use App\Http\Livewire\Management\ManagerTimekeeping;
-use App\Http\Livewire\Management\Menu;
 use App\Http\Livewire\Management\Provider;
-use App\Http\Livewire\Management\Shift;
 use App\Http\Livewire\Management\Storehouse;
-use App\Http\Livewire\Management\TimeKeeping;
-use App\Http\Livewire\Management\Table;
-use App\Http\Livewire\Management\TableEmpty;
-use App\Http\Livewire\Management\Bartending;
+use App\Http\Livewire\Management\Category;
+use App\Http\Livewire\Management\CreateInvoice;
+use App\Http\Livewire\Management\ImportToStoreHouse;
 use App\Http\Livewire\Management\Invoice;
+use App\Http\Livewire\Management\Promotion;
+use App\Http\Livewire\Management\ListCustomer;
+use App\Http\Livewire\Management\ListInvoice;
+use App\Http\Livewire\Management\ListProduct;
 use App\Http\Livewire\Management\Order;
+use App\Http\Livewire\Management\Personel;
+use App\Http\Livewire\Management\PrintInvoice;
 use App\Http\Livewire\Management\Statistical;
 use App\Http\Livewire\Management\Wage;
-use App\Http\Livewire\Profile\PrintPDF;
 use App\Http\Livewire\Profile\ProfileInfo;
 
-use Illuminate\Foundation\Auth\EmailVerificationRequest;    
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -90,32 +88,30 @@ Route::name('user.')->group(function () {
 //human resource management
 Route::name('management.')->group(function () {
     Route::prefix('management')->group(function () {
-        Route::get('/list', ListHuman::class)->name('list');
-        Route::get('/timekeeping', Timekeeping::class)->name('timekeeping');
-        Route::get('/manager_timekeeping', ManagerTimekeeping::class)->name('manager_timekeeping');
-        Route::get('/calendar', Calendar::class)->name('calendar');
-        Route::get('/shift', Shift::class)->name('shift');
-        Route::prefix('table')->group(function () {
-            Route::get('/list_empty', TableEmpty::class)->name('list_table_empty');
-            Route::get('/list', Table::class)->name('list_table');
-        });
         Route::get('/wage', Wage::class)->name('wage');
-        Route::prefix('area')->group(function () {
-            Route::get('/', Area::class)->name('area');
-        });
         Route::get('/provider', Provider::class)->name('provider');
         Route::prefix('store_house')->group(function () {
             Route::get('/', Storehouse::class)->name('store_house');
-            Route::get('/import_goods', Importgoods::class)->name('import_goods');
+            Route::get('/import_to_store_house', ImportToStoreHouse::class)->name('import_to_store_house');
             Route::get('/import_goods/import', Import::class)->name('import');
-            Route::get('/export_goods', Exportgoods::class)->name('export_goods');
         });
-        Route::get('/menu', Menu::class)->name('menu');
-        Route::get('/bartending', Bartending::class)->name('bartending');
         Route::get('/statistical', Statistical::class)->name('statistical');
-
-        Route::get('/order', Order::class)->name('order');
         Route::get('/invoice', Invoice::class)->name('invoice');
+        Route::prefix('product')->group(function () {
+            Route::get('/list_product', ListProduct::class)->name('list_product');
+            Route::get('/add_product', AddProduct::class)->name('add_product');
+            Route::get('/category', Category::class)->name('category');
+        });
+        Route::prefix('invoice')->group(function () {
+            Route::get('/create_invoice', CreateInvoice::class)->name('create_invoice');
+            Route::get('/print_invoice', PrintInvoice::class)->name('print_invoice');
+            Route::get('/list_invoice', ListInvoice::class)->name('list_invoice');
+        });
+        Route::get('/promotion', Promotion::class)->name('promotion');
+        Route::get('/list_customer', ListCustomer::class)->name('list_customer');
+        Route::prefix('staff')->group(function () {
+            Route::get('/personel', Personel::class)->name('personel');
+        });
     });
 });
 Route::get('/dashboard-filter', [StatisticalController::class, 'dashboard_filter'])->name('dashboard-filter');
