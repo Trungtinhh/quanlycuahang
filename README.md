@@ -11,7 +11,6 @@
 
 run php artisan db:seed --class='PermissionsDemoSeeder'
 <br />
-import quanlyquancoffee.sql in ./database/Database.quanlyquancoffee.sql
 <br />
 root account: 
 admin@gmail.com
