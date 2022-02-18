@@ -141,6 +141,7 @@
                                     </div> <!-- end card-->
                                 </td>
                             </tr>
+                            
                             @endforeach
                         </tbody>
                     </table>
