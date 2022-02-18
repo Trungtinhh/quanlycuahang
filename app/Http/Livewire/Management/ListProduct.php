@@ -134,6 +134,7 @@ class ListProduct extends Component
             'message' => "Đã sửa!"
         ]);
         $this->closeAdd();
+        
     }
     public function closeAdd()
     {
