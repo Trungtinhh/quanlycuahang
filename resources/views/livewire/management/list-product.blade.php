@@ -183,7 +183,24 @@
                                                     </div>
                                                     @enderror
                                                 </div>
-
+                                                <div class="mb-3">
+                                                    <label for="product-summary" class="form-label">Số lô</label>
+                                                    <input type="text" min='0' wire:model.lazy='shipment_number' placeholder="{{ $product_edit->shipment_number }}" id="product-reference" class="form-control">
+                                                    @error('shipment_number')
+                                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                        {{ $message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="product-summary" class="form-label">Quy cách</label>
+                                                    <input type="text" min='0' wire:model.lazy='specifying' placeholder="{{ $product_edit->specifying }}" id="product-reference" class="form-control">
+                                                    @error('specifying')
+                                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                        {{ $message}}
+                                                    </div>
+                                                    @enderror
+                                                </div>
                                                 <div class="mb-3">
                                                     <label for="product-description" class="form-label">Hạn sử dụng <span class="text-danger">*</span></label>
                                                     <input type="date" wire:model.lazy='date_exp' placeholder="{{ $product_edit->date_exp }}" class="form-control">

@@ -19,7 +19,7 @@ class ListProduct extends Component
     protected $paginationTheme = 'bootstrap';
     public $new, $count, $sale, $product_edit_id, $product_edit;
     public $statusEdit = false;
-    public $product_name, $product_price, $date_exp, $product_category, $provider, $description, $product_image;
+    public $product_name, $product_price, $shipment_number, $specifying, $date_exp, $product_category, $provider, $description, $product_image;
     public $provider_name, $phone, $email, $address, $image, $relationship;
     public $category_name;
     public function render()
@@ -52,6 +52,8 @@ class ListProduct extends Component
         'product_name.required' => 'Tên sản phẩm không được bỏ trống',
         'product_price.required' => 'Giá sản phẩm không được bỏ trống',
         'product_price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0',
+        'shipment_number.required' => 'Số lô  không được bỏ trống',
+        'specifying.required' => 'Quy cách không được bỏ trống',
         'date_exp.required' => 'Hạn sử dụng không được bỏ trống',
         'date_exp.after' => 'Hạn sử dụng không hợp lý',
         'product_category.required' => 'Danh mục sản phẩm không được bỏ trống',
@@ -82,9 +84,18 @@ class ListProduct extends Component
     }
     public function editProduct($product_edit_id)
     {
+        $this->resetValidation();
         $this->statusEdit = true;
         $this->product_edit_id = $product_edit_id;
         $this->product_edit = ProductDetail::where('product_id', $product_edit_id)->first();
+        $this->product_name = $this->product_edit->product_name;
+        $this->product_price = $this->product_edit->price->price_cost;
+        $this->shipment_number = $this->product_edit->shipment_number;
+        $this->specifying = $this->product_edit->specifying;
+        $this->date_exp = $this->product_edit->date_exp;
+        $this->product_category = $this->product_edit->product->category_id;
+        $this->provider = $this->product_edit->provider_id;
+        $this->description = $this->product_edit->description;
         $this->dispatchBrowserEvent('show-edit-product');
     }
     public function storeEditProduct()
@@ -92,6 +103,8 @@ class ListProduct extends Component
         $this->validate([
             'product_name' => 'required',
             'product_price' => 'required|numeric|min:0',
+            'shipment_number' => 'required',
+            'specifying' => 'required',
             'date_exp' => 'required|after:' . Carbon::now()->toDateString(),
             'product_category' => 'required',
             'provider' => 'required',
@@ -110,6 +123,8 @@ class ListProduct extends Component
             'product_name' => $this->product_name,
             'price_id' =>  $this->product_edit->price_id,
             'provider_id' => $this->provider,
+            'specifying' => $this->specifying,
+            'shipment_number' => $this->shipment_number,
             'description' => $this->description,
             'date_exp' =>  $this->date_exp,
             'image' => $this->product_image->store('images', 'public'),
@@ -123,7 +138,7 @@ class ListProduct extends Component
     public function closeAdd()
     {
         $this->resetValidation();
-        $this->noti = '';
+        $this->product_image = '';
     }
     public function addProvider()
     {
