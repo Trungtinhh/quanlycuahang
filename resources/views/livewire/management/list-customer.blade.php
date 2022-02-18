@@ -19,7 +19,7 @@
             <div class="card mb-2">
                 <div class="card-body">
                     <div class="row justify-content-between">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="text-md mt-3 mt-md-0">
                                 <form wire:submit.prevent='filter'>
                                     <label for="product-name" class="form-label">Lọc theo mối quan hệ</label>
@@ -41,6 +41,10 @@
                                 </form>
                             </div>
                         </div><!-- end col-->
+                        <div class='col-md-3'>
+                            <label for="product-name" class="form-label">Tìm kiếm</label>
+                            <input class="form-control" id="search" type="text">
+                        </div>
                         <div class="col-md-5">
                             <div class="text-md-end mt-3 mt-md-0">
                                 <button type="button" wire:click='resetAll' class="btn btn-danger waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#add-customer"><i class="mdi mdi-plus-circle me-1"></i> Thêm </button>
@@ -50,71 +54,100 @@
                 </div> <!-- end card-body-->
             </div> <!-- end card-->
             @if(!$statusFilter)
-            @foreach($customer as $cus)
-            <div class="card mb-2">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-sm-4">
-                            <div class="d-flex align-items-start">
-                                <img class="d-flex align-self-center me-3 rounded-circle" src="{{asset('image/customer.png')}}" alt="Generic placeholder image" width="100px;" height="100px;">
-                                <div class="w-100">
-                                    <h4 class="mt-0 mb-2 font-16">{{ $cus->buyer_name }}</h4>
-                                    <p class="mb-1"><b>Địa chỉ:</b> {{ $cus->address }}</p>
-                                    <p class="mb-0"><b>Quan hệ:</b> @if($cus->relationship == 1) {{ 'Thân thiết' }} @else {{ 'Bình thường' }} @endif</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <p class="mb-1"><i class="mdi mdi-phone-classic me-1"></i> 0{{ $cus->phone }}</p>
-                            <p class="mb-0"><i class="mdi mdi-book-settings me-1"></i> {{ $cus->tax_code }}</p>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="text-center mt-3 mt-sm-0">
-                                @if($cus->relationship == 1) <div class="badge font-14 bg-soft-success rounded-circle p-1"><i class="fa fa-star" style="font-size:20px;color:yellow"></i></div>@endif
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="text-sm">
-                                <a wire:click='editCustomer({{ $cus }})' class="action-icon bg-primary text-light"> <i class="mdi mdi-square-edit-outline"></i></a>
-                            </div>
-                        </div> <!-- end col-->
-                    </div> <!-- end row -->
+            <div class="row">
+                <div class="col-12">
+
+                    <table class="w-100">
+                        <tbody id='content' style="width:100%;">
+                            @foreach($customer as $cus)
+                            <tr>
+                                <td>
+                                    <div class="card mb-2" style="width:100%;">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-4">
+                                                    <div class="d-flex align-items-start">
+                                                        <img class="d-flex align-self-center me-3 rounded-circle" src="{{asset('image/customer.png')}}" alt="Generic placeholder image" width="100px;" height="100px;">
+                                                        <div class="w-100">
+                                                            <h4 class="mt-0 mb-2 font-16">{{ $cus->buyer_name }}</h4>
+                                                            <p class="mb-1"><b>Địa chỉ:</b> {{ $cus->address }}</p>
+                                                            <p class="mb-0"><b>Quan hệ:</b> @if($cus->relationship == 1) {{ 'Thân thiết' }} @else {{ 'Bình thường' }} @endif</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <p class="mb-1"><i class="mdi mdi-phone-classic me-1"></i> 0{{ $cus->phone }}</p>
+                                                    <p class="mb-0"><i class="mdi mdi-book-settings me-1"></i> {{ $cus->tax_code }}</p>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="text-center mt-3 mt-sm-0">
+                                                        @if($cus->relationship == 1) <div class="badge font-14 bg-soft-success rounded-circle p-1"><i class="fa fa-star" style="font-size:20px;color:yellow"></i></div>@endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="text-sm">
+                                                        <a wire:click='editCustomer({{ $cus }})' class="action-icon bg-primary text-light"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                    </div>
+                                                </div> <!-- end col-->
+                                            </div> <!-- end row -->
+                                        </div>
+                                    </div> <!-- end card-->
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
                 </div>
-            </div> <!-- end card-->
-            @endforeach
+            </div>
+
             @else
-            @foreach($customerFilter as $cus)
-            <div class="card mb-2">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-sm-4">
-                            <div class="d-flex align-items-start">
-                                <img class="d-flex align-self-center me-3 rounded-circle" src="{{ asset('image/customer.png') }}" alt="Generic placeholder image" width="100px;" height="100px;">
-                                <div class="w-100">
-                                    <h4 class="mt-0 mb-2 font-16">{{ $cus->buyer_name }}</h4>
-                                    <p class="mb-1"><b>Địa chỉ:</b> {{ $cus->address }}</p>
-                                    <p class="mb-0"><b>Quan hệ:</b> @if($cus->relationship == 1) {{ 'Thân thiết' }} @else {{ 'Bình thường' }} @endif</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <p class="mb-0"><i class="mdi mdi-phone-classic me-1"></i> 0{{ $cus->phone }}</p>
-                            <p class="mb-0"><i class="mdi mdi-book-settings me-1"></i> {{ $cus->tax_code }}</p>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="text-center mt-3 mt-sm-0">
-                                @if($cus->relationship == 1) <div class="badge font-14 bg-soft-success rounded-circle p-1"><i class="fa fa-star" style="font-size:20px;color:yellow"></i></div>@endif
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="text-sm">
-                                <a wire:click='editCustomer({{ $cus }})' class="action-icon bg-primary text-light"> <i class="mdi mdi-square-edit-outline"></i></a>
-                            </div>
-                        </div> <!-- end col-->
-                    </div> <!-- end row -->
+            <div class="row">
+                <div class="col-12">
+
+                    <table class="w-100">
+                        <tbody id='content' style="width:100%;">
+                            @foreach($customerFilter as $cus)
+                            <tr>
+                                <td>
+                                    <div class="card mb-2">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-sm-4">
+                                                    <div class="d-flex align-items-start">
+                                                        <img class="d-flex align-self-center me-3 rounded-circle" src="{{ asset('image/customer.png') }}" alt="Generic placeholder image" width="100px;" height="100px;">
+                                                        <div class="w-100">
+                                                            <h4 class="mt-0 mb-2 font-16">{{ $cus->buyer_name }}</h4>
+                                                            <p class="mb-1"><b>Địa chỉ:</b> {{ $cus->address }}</p>
+                                                            <p class="mb-0"><b>Quan hệ:</b> @if($cus->relationship == 1) {{ 'Thân thiết' }} @else {{ 'Bình thường' }} @endif</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <p class="mb-0"><i class="mdi mdi-phone-classic me-1"></i> 0{{ $cus->phone }}</p>
+                                                    <p class="mb-0"><i class="mdi mdi-book-settings me-1"></i> {{ $cus->tax_code }}</p>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="text-center mt-3 mt-sm-0">
+                                                        @if($cus->relationship == 1) <div class="badge font-14 bg-soft-success rounded-circle p-1"><i class="fa fa-star" style="font-size:20px;color:yellow"></i></div>@endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="text-sm">
+                                                        <a wire:click='editCustomer({{ $cus }})' class="action-icon bg-primary text-light"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                    </div>
+                                                </div> <!-- end col-->
+                                            </div> <!-- end row -->
+                                        </div>
+                                    </div> <!-- end card-->
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
                 </div>
-            </div> <!-- end card-->
-            @endforeach
+            </div>
             @endif
             <!-- <div class="text-center my-4">
                 <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading me-1"></i> Đang tải </a>

@@ -24,7 +24,7 @@ class CreateInvoiceDetailsTable extends Migration
             $table->double('submoney')->default(0);
             $table->double('tax')->default(0);
             $table->bigInteger('promotion_id')->unsigned()->nullable();
-            $table->foreign('quantity_promotion')->references('id')->on('promotions')->onDelete('cascade');
+            $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');
             $table->bigInteger('quantity_promotion')->nullable();
             $table->dateTime('date_create')->nullable();
             $table->timestamps();

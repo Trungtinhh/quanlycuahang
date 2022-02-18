@@ -56,7 +56,7 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="product-name" class="form-label">Tên đơn vị <span class="text-danger">*</span></label>
-                                <input type="text" wire:model.lazy='saler_name' readonly id="product-name" class="form-control">
+                                <input type="text" wire:model.lazy='saler_name' id="product-name" class="form-control">
                                 @error('saler_name')
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                     {{ $message}}
